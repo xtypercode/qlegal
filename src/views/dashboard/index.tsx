@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import DashboardLayout from "../../layouts/dashboard";
 import SidebarLayout from "../../layouts/sidebar";
+import CalendarContainer from "../../components/containers/CalendarContainer";
 
 const DashboardPage = () => {
 	useEffect(() => {
@@ -10,7 +11,11 @@ const DashboardPage = () => {
 	return (
 		<DashboardLayout>
 			<SidebarLayout>
-				<div>msh</div>
+				<div className="container flex flex-col px-4 lg:flex-row lg:gap-8">
+					<div className="w-full md:w-1/2">
+						<CalendarContainer />
+					</div>
+				</div>
 			</SidebarLayout>
 		</DashboardLayout>
 	);
