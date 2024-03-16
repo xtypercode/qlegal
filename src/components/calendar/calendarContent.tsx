@@ -12,7 +12,7 @@ import pt from "date-fns/locale/pt";
 import NewEventDialog from "./newEventDialog";
 import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5";
 import { CalendarDay } from "./CalendarDay";
-import { Event } from "../../config/types/Event";
+import { Event } from "../../config/models/Event";
 import { Button } from "flowbite-react";
 
 interface Props {

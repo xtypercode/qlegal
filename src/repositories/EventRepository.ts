@@ -1,4 +1,4 @@
-import { Event } from "../config/types/Event";
+import { Event } from "../config/models/Event";
 import { events } from "../data/events";
 
 export class EventRepository {

@@ -9,7 +9,7 @@ import {
 } from "flowbite-react";
 import { format } from "date-fns";
 import { EventRepository } from "../../repositories/EventRepository";
-import { Event } from "../../config/types/Event";
+import { Event } from "../../config/models/Event";
 
 interface NewEventDialogProps {
 	onAddEvent: (newEvent: Event) => void;

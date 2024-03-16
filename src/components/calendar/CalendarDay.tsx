@@ -8,7 +8,7 @@ import {
 	isToday,
 	parseISO,
 } from "date-fns";
-import { Event } from "../../config/types/Event";
+import { Event } from "../../config/models/Event";
 
 interface CalendarDayProps {
 	day: Date;

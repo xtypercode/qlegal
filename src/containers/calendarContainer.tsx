@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Calendar from "../calendar/calendarEvents";
-import { events } from "../../data/events";
+import Calendar from "../components/calendar/calendar";
+import { events } from "../data/events";
 
 const CalendarContainer: React.FC = () => {
 	const [eventList, setEventList] = useState(events);

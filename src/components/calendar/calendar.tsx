@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Event } from "../../config/types/Event";
+import { Event } from "../../config/models/Event";
 import { showToastWithTimeout } from "../toast/utils/toast";
 import ToastMessage from "../toast/ToastMessage";
 import CalendarContent from "./calendarContent";
