@@ -29,6 +29,12 @@ export class ContactRepository {
 		}
 	}
 
+	deleteContact(email: string): void {
+		this.contactList = this.contactList.filter(
+			(contact) => contact.email !== email
+		);
+	}
+
 	clearContacts(): void {
 		this.contactList = [];
 	}

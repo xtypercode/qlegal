@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "flowbite-react";
 import { Contact } from "../../../config/models/contact";
 import EditContactModal from "../EditContactModal";
+import DeleteContactModal from "../DeleteContactModal";
 
 export interface ContactTableRowProps {
 	contact: Contact;
@@ -61,12 +61,7 @@ const ContactTableRow: React.FC<ContactTableRowProps> = ({
 			</td>
 			<td className="flex gap-2 whitespace-nowrap p-4 text-xs font-medium text-gray-900 dark:text-white">
 				<EditContactModal />
-				<Button
-					onClick={() => onDeleteClick()}
-					className=" bg-red-500 text-white enabled:hover:bg-red-600"
-				>
-					Eliminar
-				</Button>
+				<DeleteContactModal contact={contact} />
 			</td>
 		</tr>
 	);
