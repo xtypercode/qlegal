@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import {
 	Button,
 	CustomFlowbiteTheme,
@@ -11,12 +11,14 @@ import {
 } from "flowbite-react";
 import { Contact } from "../../config/models/contact";
 import { ContactRepository } from "../../repositories/ContactRepository";
+import ToastMessage from "../toast/ToastMessage";
+import { showToastWithTimeout } from "../toast/utils/toast";
 
 const CUSTOM_TEXT_INPUT_THEME: CustomFlowbiteTheme["textInput"] = {
 	field: {
 		input: {
 			colors: {
-				gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-primary-700 focus:ring-primary-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500",
+				gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-primary-700 focus:ring-primary-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-primary-500",
 			},
 		},
 	},
@@ -24,8 +26,16 @@ const CUSTOM_TEXT_INPUT_THEME: CustomFlowbiteTheme["textInput"] = {
 
 const contactRepository = new ContactRepository();
 
-const AddContactModal: React.FC = () => {
+interface AddContactModalProps {
+	onContactAdded: (newContact: Contact) => void;
+}
+
+const AddContactModal: React.FC<AddContactModalProps> = ({
+	onContactAdded,
+}) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [toastMessage, setToastMessage] = useState<string>("");
+
 	const [formData, setFormData] = useState<Contact>({
 		company: "",
 		country: "",
@@ -43,13 +53,12 @@ const AddContactModal: React.FC = () => {
 		});
 	};
 
-	const handleSubmit = async (
-		e: FormEvent<HTMLFormElement>
-	): Promise<void> => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
 		try {
-			await contactRepository.addContact(formData);
-			console.log("Novo contato adicionado com sucesso!");
+			const newContact = { ...formData };
+			contactRepository.addContact(newContact);
 			setFormData({
 				company: "",
 				country: "",
@@ -59,19 +68,32 @@ const AddContactModal: React.FC = () => {
 				phoneNumber: "",
 			});
 			setOpenModal(false);
+			setToastMessage("Contacto adicionado com sucesso!");
+			onContactAdded(newContact);
 		} catch (error) {
-			console.error("Erro ao adicionar novo contato:", error);
-			// Trate o erro conforme necessário
+			setToastMessage("Erro ao adicionar contacto");
+			console.error("Erro ao adicionar novo contacto:", error);
 		}
 	};
 
+	useEffect(() => {
+		if (toastMessage) {
+			showToastWithTimeout(toastMessage, setToastMessage);
+		}
+	}, [toastMessage]);
+
 	return (
 		<>
-			<Button onClick={() => setOpenModal(true)}>Novo contacto</Button>
+			<Button
+				className="bg-primary-700 enabled:hover:bg-primary-800"
+				onClick={() => setOpenModal(true)}
+			>
+				Novo contacto
+			</Button>
 			<Modal show={openModal} onClose={() => setOpenModal(false)}>
 				<ModalHeader>Adicionar novo contacto</ModalHeader>
 				<ModalBody>
-					<form onSubmit={handleSubmit}>
+					<form id="addContactForm" onSubmit={handleSubmit}>
 						<div className="grid grid-cols-6 gap-6">
 							<div className="col-span-6 sm:col-span-3">
 								<Label>Empresa</Label>
@@ -80,6 +102,7 @@ const AddContactModal: React.FC = () => {
 									value={formData.company}
 									onChange={handleInputChange}
 									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 							<div className="col-span-6 sm:col-span-3">
@@ -88,6 +111,8 @@ const AddContactModal: React.FC = () => {
 									name="country"
 									value={formData.country}
 									onChange={handleInputChange}
+									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 							<div className="col-span-6 sm:col-span-3">
@@ -97,6 +122,8 @@ const AddContactModal: React.FC = () => {
 									type="email"
 									value={formData.email}
 									onChange={handleInputChange}
+									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 							<div className="col-span-6 sm:col-span-3">
@@ -105,6 +132,8 @@ const AddContactModal: React.FC = () => {
 									name="name"
 									value={formData.name}
 									onChange={handleInputChange}
+									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 							<div className="col-span-6 sm:col-span-3">
@@ -113,6 +142,8 @@ const AddContactModal: React.FC = () => {
 									name="department"
 									value={formData.department}
 									onChange={handleInputChange}
+									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 							<div className="col-span-6 sm:col-span-3">
@@ -122,6 +153,8 @@ const AddContactModal: React.FC = () => {
 									type="number"
 									value={formData.phoneNumber}
 									onChange={handleInputChange}
+									theme={CUSTOM_TEXT_INPUT_THEME}
+									required
 								/>
 							</div>
 						</div>
@@ -130,12 +163,19 @@ const AddContactModal: React.FC = () => {
 				<ModalFooter>
 					<Button
 						type="submit"
-						className="bg-primary-700 enabled:hover:bg-primary-800"
+						className="bg-primary-700 enabled:hover:bg-primary-800 focus:ring-0"
+						form="addContactForm"
 					>
 						Adicionar contacto
 					</Button>
 				</ModalFooter>
 			</Modal>
+			{toastMessage && (
+				<ToastMessage
+					message={toastMessage}
+					onClose={() => setToastMessage("")}
+				/>
+			)}
 		</>
 	);
 };

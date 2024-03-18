@@ -7,12 +7,14 @@ export interface ContactTableRowProps {
 	contact: Contact;
 	selectedContacts: string[];
 	handleCheckboxChange: (contactId: string) => void;
+	onContactEdited: (editedContact: Contact) => void;
 }
 
 const ContactTableRow: React.FC<ContactTableRowProps> = ({
 	contact,
 	selectedContacts,
 	handleCheckboxChange,
+	onContactEdited,
 }) => {
 	const isChecked = selectedContacts.includes(contact.name);
 
@@ -60,7 +62,10 @@ const ContactTableRow: React.FC<ContactTableRowProps> = ({
 				{contact.phoneNumber}
 			</td>
 			<td className="flex gap-2 whitespace-nowrap p-4 text-xs font-medium text-gray-900 dark:text-white">
-				<EditContactModal />
+				<EditContactModal
+					contact={contact}
+					onContactEdited={onContactEdited}
+				/>
 				<DeleteContactModal contact={contact} />
 			</td>
 		</tr>

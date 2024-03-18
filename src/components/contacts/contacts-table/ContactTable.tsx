@@ -4,9 +4,10 @@ import ContactTableHeader from "./ContactTableHeader";
 import ContactTableBody from "./ContactTableBody";
 interface ContactTableProps {
 	contacts: Contact[];
+	onContactEdited: (editedContact: Contact) => void;
 }
 
-const ContactTable: React.FC<ContactTableProps> = ({ contacts }) => {
+const ContactTable: React.FC<ContactTableProps> = ({ contacts, onContactEdited }) => {
 	const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
 
 	const handleCheckboxChange = (contactId: string) => {
@@ -25,6 +26,7 @@ const ContactTable: React.FC<ContactTableProps> = ({ contacts }) => {
 				contacts={contacts}
 				selectedContacts={selectedContacts}
 				handleCheckboxChange={handleCheckboxChange}
+					onContactEdited={onContactEdited}
 			/>
 		</table>
 	);

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import {
 	Button,
 	CustomFlowbiteTheme,
@@ -11,6 +11,8 @@ import {
 } from "flowbite-react";
 import { Contact } from "../../config/models/contact";
 import { ContactRepository } from "../../repositories/ContactRepository";
+import { showToastWithTimeout } from "../toast/utils/toast";
+import ToastMessage from "../toast/ToastMessage";
 
 const CUSTOM_TEXT_INPUT_THEME: CustomFlowbiteTheme["textInput"] = {
 	field: {
@@ -24,16 +26,30 @@ const CUSTOM_TEXT_INPUT_THEME: CustomFlowbiteTheme["textInput"] = {
 
 const contactRepository = new ContactRepository();
 
-const EditContactModal: React.FC = () => {
+interface EditContactModalProps {
+	contact: Contact;
+	onContactEdited: (editedContact: Contact) => void;
+}
+
+const EditContactModal: React.FC<EditContactModalProps> = ({
+	contact,
+	onContactEdited,
+}) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [toastMessage, setToastMessage] = useState<string>("");
+
 	const [formData, setFormData] = useState<Contact>({
-		company: "",
-		country: "",
-		email: "",
-		name: "",
-		department: "",
-		phoneNumber: "",
+		company: contact.company,
+		country: contact.country,
+		email: contact.email,
+		name: contact.name,
+		department: contact.department,
+		phoneNumber: contact.phoneNumber,
 	});
+
+	useEffect(() => {
+		setFormData(contact);
+	}, [contact]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		const { name, value } = e.target;
@@ -59,11 +75,19 @@ const EditContactModal: React.FC = () => {
 				phoneNumber: "",
 			});
 			setOpenModal(false);
+			setToastMessage("Contacto editado com sucesso!");
+			onContactEdited(formData);
 		} catch (error) {
-			console.error("Erro ao editar contato:", error);
-			// Trate o erro conforme necessário
+			setToastMessage("Erro ao editar contacto");
+			console.error("Erro ao editar contacto:", error);
 		}
 	};
+
+	useEffect(() => {
+		if (toastMessage) {
+			showToastWithTimeout(toastMessage, setToastMessage);
+		}
+	}, [toastMessage]);
 
 	return (
 		<>
@@ -71,7 +95,7 @@ const EditContactModal: React.FC = () => {
 			<Modal show={openModal} onClose={() => setOpenModal(false)}>
 				<ModalHeader>Editar contacto</ModalHeader>
 				<ModalBody>
-					<form onSubmit={handleSubmit}>
+					<form id="editContactForm" onSubmit={handleSubmit}>
 						<div className="grid grid-cols-6 gap-6">
 							<div className="col-span-6 sm:col-span-3">
 								<Label>Empresa</Label>
@@ -131,11 +155,17 @@ const EditContactModal: React.FC = () => {
 					<Button
 						type="submit"
 						className="bg-primary-700 enabled:hover:bg-primary-800"
+						form="editContactForm"
 					>
-						Adicionar contacto
+						Atualizar contacto
 					</Button>
 				</ModalFooter>
 			</Modal>
+			{
+				toastMessage && (
+					<ToastMessage message={toastMessage} onClose={() => setToastMessage("")} />
+				)
+			}
 		</>
 	);
 };

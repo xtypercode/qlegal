@@ -6,12 +6,14 @@ interface ContactTableBodyProps {
 	contacts: Contact[];
 	selectedContacts: string[];
 	handleCheckboxChange: (contactId: string) => void;
+	onContactEdited: (editedContact: Contact) => void;
 }
 
 const ContactTableBody: React.FC<ContactTableBodyProps> = ({
 	contacts,
 	selectedContacts,
 	handleCheckboxChange,
+	onContactEdited,
 }) => {
 	return (
 		<tbody className="divide-x divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -21,6 +23,7 @@ const ContactTableBody: React.FC<ContactTableBodyProps> = ({
 					contact={contact}
 					selectedContacts={selectedContacts}
 					handleCheckboxChange={handleCheckboxChange}
+					onContactEdited={onContactEdited}
 				/>
 			))}
 		</tbody>
