@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "flowbite-react";
 import { Contact } from "../../../config/models/contact";
+import EditContactModal from "../EditContactModal";
 
 export interface ContactTableRowProps {
 	contact: Contact;
@@ -17,14 +18,6 @@ const ContactTableRow: React.FC<ContactTableRowProps> = ({
 
 	const handleCheckboxClick = () => {
 		handleCheckboxChange(contact.name);
-	};
-
-	const onDeleteClick = () => {
-		// Lógica para exclusão do contact
-	};
-
-	const onEditClick = () => {
-		// Lógica para edição do contact
 	};
 
 	return (
@@ -66,13 +59,8 @@ const ContactTableRow: React.FC<ContactTableRowProps> = ({
 			<td className="whitespace-nowrap p-4 text-xs font-medium text-gray-900 dark:text-white">
 				{contact.phoneNumber}
 			</td>
-			<td className="flex whitespace-nowrap p-4 text-xs font-medium text-gray-900 dark:text-white">
-				<Button
-					onClick={() => onEditClick()}
-					className="mr-2  bg-blue-500 text-white enabled:hover:bg-blue-600"
-				>
-					Editar
-				</Button>
+			<td className="flex gap-2 whitespace-nowrap p-4 text-xs font-medium text-gray-900 dark:text-white">
+				<EditContactModal />
 				<Button
 					onClick={() => onDeleteClick()}
 					className=" bg-red-500 text-white enabled:hover:bg-red-600"
