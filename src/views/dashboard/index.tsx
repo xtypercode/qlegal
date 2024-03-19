@@ -34,13 +34,13 @@ const DashboardPage = () => {
 		<DashboardLayout>
 			<SidebarLayout>
 				<div className="container flex flex-col px-4 lg:flex-row lg:gap-8">
-					<div className="w-full md:w-1/2">
+					<div className="w-full lg:w-1/2">
 						<CalendarContainer />
 
 						<TaskContainer />
 					</div>
 
-					<div className="w-full md:w-1/2 mt-4 md:mt-0 md:pr-4 ">
+					<div className="w-full lg:w-1/2 mt-4 lg:mt-0 lg:pr-4 ">
 						<div className="mb-4 flex w-full items-center justify-between">
 							<h2 className="text-xl font-bold">Notificações</h2>
 
