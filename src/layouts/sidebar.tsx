@@ -16,6 +16,7 @@ import {
 	IoChevronBackOutline,
 	IoChevronForwardOutline,
 } from "react-icons/io5";
+import { useLocation } from "react-router-dom";
 
 interface SidebarLayoutProps {
 	children: React.ReactNode;
@@ -23,12 +24,12 @@ interface SidebarLayoutProps {
 
 const customTheme: CustomFlowbiteTheme["sidebar"] = {
 	root: {
-		base: "h-full relative justify-center ",
-		inner: "h-full overflow-y-auto overflow-x-hidden rounded bg-secondary-700 py-4 px-3 dark:bg-gray-800",
+		base: "h-full relative justify-center",
+		inner: "md:w-80 h-full overflow-y-auto overflow-x-hidden rounded bg-secondary-700 py-4 px-3 dark:bg-gray-800",
 	},
 	item: {
 		base: "w-full flex items-center justify-center rounded-lg p-2 text-base font-normal text-white hover:bg-secondary-500 hover:text-white dark:text-white dark:hover:bg-gray-700",
-		active: "bg-primary-600 text-white dark:bg-gray-700",
+		active: "bg-primary-600 hover:bg-primary-700 text-white dark:bg-gray-700",
 		collapsed: {
 			insideCollapse: "group w-full pl-8 transition duration-75",
 			noIcon: "font-bold",
@@ -39,9 +40,6 @@ const customTheme: CustomFlowbiteTheme["sidebar"] = {
 		},
 	},
 };
-
-const SIDEBAR_WIDTH_NORMAL = "w-72";
-const SIDEBAR_WIDTH_COLLAPSED = "w-20";
 
 const sidebarItems = [
 	{ href: "/dashboard", icon: IoHomeOutline, label: "Inicio" },
@@ -64,10 +62,11 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 	const [isMobile, setIsMobile] = useState<boolean>(false);
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 	const [activePage, setActivePage] = useState<number>(0);
+	const location = useLocation();
 
 	useEffect(() => {
 		const handleResize = () => {
-			setIsMobile(window.innerWidth <= 1024);
+			setIsMobile(window.innerWidth <= 768);
 		};
 
 		handleResize();
@@ -81,18 +80,25 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 		setCollapsed(!collapsed);
 	};
 
-	const sidebarWidthClass =
-		isMobile || collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_NORMAL;
-
 	const handlePageChange = (index: number) => {
 		setActivePage(index);
 	};
+
+	useEffect(() => {
+		if (location.pathname === "/dashboard") {
+			setActivePage(0);
+		} else if (location.pathname === "/dashboard/calendar") {
+			setActivePage(2);
+		} else if (location.pathname === "/dashboard/contacts") {
+			setActivePage(4);
+		}
+	}, [location.pathname]);
 
 	return (
 		<div className="flex h-full gap-1 md:gap-6">
 			<Sidebar
 				aria-label="sidebar"
-				className={`${sidebarWidthClass}`}
+				className="md:w-80 h-svh"
 				theme={customTheme}
 				collapsed={isMobile || collapsed}
 			>
