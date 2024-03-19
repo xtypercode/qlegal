@@ -98,7 +98,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 		<div className="flex h-full gap-1 md:gap-6">
 			<Sidebar
 				aria-label="sidebar"
-				className="md:w-80 h-svh"
+				className="md:w-80 h-full"
 				theme={customTheme}
 				collapsed={isMobile || collapsed}
 			>
