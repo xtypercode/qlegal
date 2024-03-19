@@ -6,7 +6,7 @@ import SidebarLayout from "../../../layouts/sidebar";
 const CalendarPage = () => {
 	return (
 		<SidebarLayout>
-			<main className="container flex justify-between h-full flex-col lg:gap-8 lg:flex-row px-4">
+			<main className="container flex h-full flex-col lg:gap-8 lg:flex-row px-4">
 				<section className="w-full">
 					<h2 className="mb-4 text-2xl font-bold">Calendário</h2>
 

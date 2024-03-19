@@ -22,24 +22,8 @@ interface SidebarLayoutProps {
 	children: React.ReactNode;
 }
 
-const customTheme: CustomFlowbiteTheme["sidebar"] = {
-	root: {
-		base: "h-full relative justify-center",
-		inner: "md:w-80 h-full overflow-y-auto overflow-x-hidden rounded bg-secondary-700 py-4 px-3 dark:bg-gray-800",
-	},
-	item: {
-		base: "w-full flex items-center justify-center rounded-lg p-2 text-base font-normal text-white hover:bg-secondary-500 hover:text-white dark:text-white dark:hover:bg-gray-700",
-		active: "bg-primary-600 hover:bg-primary-700 text-white dark:bg-gray-700",
-		collapsed: {
-			insideCollapse: "group w-full pl-8 transition duration-75",
-			noIcon: "font-bold",
-		},
-		icon: {
-			base: "h-6 w-6 flex-shrink-0 transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white",
-			active: "dark:text-gray-100",
-		},
-	},
-};
+const SIDEBAR_WIDTH_NORMAL = "w-80";
+const SIDEBAR_WIDTH_COLLAPSED = "w-20";
 
 const sidebarItems = [
 	{ href: "/dashboard", icon: IoHomeOutline, label: "Inicio" },
@@ -64,6 +48,17 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 	const [activePage, setActivePage] = useState<number>(0);
 	const location = useLocation();
 
+	const toggleCollapse = () => {
+		setCollapsed(!collapsed);
+	};
+
+	const handlePageChange = (index: number) => {
+		setActivePage(index);
+	};
+
+	const sidebarWidthClass =
+		isMobile || collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_NORMAL;
+
 	useEffect(() => {
 		const handleResize = () => {
 			setIsMobile(window.innerWidth <= 768);
@@ -76,14 +71,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 		};
 	}, []);
 
-	const toggleCollapse = () => {
-		setCollapsed(!collapsed);
-	};
-
-	const handlePageChange = (index: number) => {
-		setActivePage(index);
-	};
-
 	useEffect(() => {
 		if (location.pathname === "/dashboard") {
 			setActivePage(0);
@@ -94,11 +81,31 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 		}
 	}, [location.pathname]);
 
+	const customTheme: CustomFlowbiteTheme["sidebar"] = {
+		root: {
+			base: "h-full relative justify-center",
+			inner: `${sidebarWidthClass} h-full overflow-y-auto overflow-x-hidden rounded bg-secondary-700 py-4 px-3 dark:bg-gray-800`,
+		},
+		item: {
+			base: "w-full flex items-center justify-center rounded-lg p-2 text-base font-normal text-white hover:bg-secondary-500 hover:text-white dark:text-white dark:hover:bg-gray-700",
+			active: "bg-primary-600 hover:bg-primary-700 text-white dark:bg-gray-700",
+			collapsed: {
+				insideCollapse: "group w-full pl-8 transition duration-75",
+				noIcon: "font-bold",
+			},
+			icon: {
+				base: "h-6 w-6 flex-shrink-0 transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white",
+				active: "dark:text-gray-100",
+			},
+		},
+	};
+
+
 	return (
 		<div className="flex h-full gap-1 md:gap-6">
 			<Sidebar
 				aria-label="sidebar"
-				className="md:w-80 h-full"
+				className={`${sidebarWidthClass}`}
 				theme={customTheme}
 				collapsed={isMobile || collapsed}
 			>
