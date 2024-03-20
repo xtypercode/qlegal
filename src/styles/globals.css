@@ -3,45 +3,50 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
 
 *,
 * ::before,
 * ::after {
-  box-sizing: inherit;
-  padding: 0;
-  margin: 0;
-  font-family: "Poppins", sans-serif;
+	box-sizing: inherit;
+	padding: 0;
+	margin: 0;
+	font-family: "Poppins", sans-serif;
 }
 
 html {
-  font-size: 1rem;
-  box-sizing: border-box;
-  outline: 0;
+	height: 100%;
+	font-size: 1rem;
+	box-sizing: border-box;
+	outline: 0;
+}
+
+body {
+	@apply bg-gray-300 h-full;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.text-balance {
+		text-wrap: balance;
+	}
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
