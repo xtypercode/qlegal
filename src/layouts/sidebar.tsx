@@ -15,6 +15,7 @@ import {
 	IoPeopleOutline,
 	IoChevronBackOutline,
 	IoChevronForwardOutline,
+	IoVideocamOutline,
 } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 
@@ -32,6 +33,11 @@ const sidebarItems = [
 		href: "/dashboard/calendar",
 		icon: IoCalendarOutline,
 		label: "Calendario",
+	},
+	{
+		href: "/dashboard/meetings",
+		icon: IoVideocamOutline,
+		label: "Reuniões",
 	},
 	{ href: "/dashboard/chat", icon: IoChatbubblesOutline, label: "Chat" },
 	{ href: "/dashboard/contacts", icon: IoPeopleOutline, label: "Contactos" },
@@ -76,8 +82,10 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 			setActivePage(0);
 		} else if (location.pathname === "/dashboard/calendar") {
 			setActivePage(2);
+		} else if (location.pathname === "/dashboard/meetings") {
+			setActivePage(3);
 		} else if (location.pathname === "/dashboard/contacts") {
-			setActivePage(4);
+			setActivePage(5);
 		}
 	}, [location.pathname]);
 
@@ -99,7 +107,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
 			},
 		},
 	};
-
 
 	return (
 		<div className="flex h-full gap-1 md:gap-6">

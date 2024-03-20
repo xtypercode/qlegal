@@ -47,4 +47,21 @@ export class TaskRepository {
 			}, 200);
 		});
 	}
+
+	// deleteTask(taskId: number): Promise<void> {
+	// 	return new Promise((resolve, reject) => {
+	// 		setTimeout(() => {
+	// 			const initialLength = mockTasks.length;
+	// 			const filteredTasks = mockTasks.filter(
+	// 				(task) => task.id !== taskId
+	// 			);
+	// 			if (filteredTasks.length < initialLength) {
+	// 				mockTasks = filteredTasks;
+	// 				resolve();
+	// 			} else {
+	// 				reject(new Error("Task not found"));
+	// 			}
+	// 		}, 200);
+	// 	});
+	// }
 }
